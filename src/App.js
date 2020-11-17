@@ -13,7 +13,7 @@ export default class App extends React.Component {
       data: "",
     };
     this.data_uri =
-      "http://us-central1-stock-fantasy-fd46e.cloudfunctions.net/helloWorld";
+      "https://us-central1-stock-fantasy-fd46e.cloudfunctions.net/helloWorld";
   }
 
   componentDidMount() {
