@@ -1,0 +1,38 @@
+import socketIOClient from "socket.io-client";
+import { w3cwebsocket } from "websocket";
+import { polygonClient, restClient, websocketClient } from "polygon.io";
+
+const alpha_api_key = "LI2ZJRIEY8RGTQ5Q";
+const alpha_uri = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AA&interval=5min&apikey=${alpha_api_key}`;
+const polygon_api_key = "XeTY0tdVXOfkBdrqdBoI6xYywm6KB5zQ";
+const pol_uri = `https://api.polygon.io/v2/reference/tickers?apiKey=${polygon_api_key}`;
+const pol_sockey_uri = "wss://socket.polygon.io/stocks";
+const auth_pol_obj = {
+  action: "auth",
+  params: polygon_api_key,
+};
+const rest = restClient(polygon_api_key);
+
+// const stocksWS = w3cwebsocket(pol_sockey_uri)
+
+// stocksWS.onmessage = (raw) => {
+//   const message = JSON.parse(raw);
+//   switch (message.ev) {
+//     case "T":
+
+//       console.log(raw);
+//       break;
+//     default:
+//       console.log("DEFAULT");
+//   }
+//   stocksWS.send({ action: "subscribe", params: "T.MSFT" });
+
+// };
+const ws = new w3cwebsocket(pol_sockey_uri);
+ws.onopen = () => {
+  ws.send(auth_pol_obj);
+  ws.send(`{"action":"subscribe","params":"C.AUD/USD,C.USD/EUR,C.USD/JPY"}`)
+};
+ws.onmessage = (data) => {
+  console.log(data);
+};
